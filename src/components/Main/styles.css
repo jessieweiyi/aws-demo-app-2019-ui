@@ -1,0 +1,6 @@
+.BackgroundImg {
+    width: 100%;
+    height: 200px;
+    background: url(andy_warhol_coke.jpg) repeat-x;
+    background-size: 220px auto;
+  }

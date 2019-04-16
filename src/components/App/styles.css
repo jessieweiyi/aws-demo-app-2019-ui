@@ -1,0 +1,14 @@
+.App {
+  margin: 20px auto;
+  max-width: 1000px;
+  width: calc(100% - 40px);
+  background: #f5f6f7;
+  padding: 20px;
+  border-radius: 3px;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid #ddd;
+  margin: 20px 0;
+}

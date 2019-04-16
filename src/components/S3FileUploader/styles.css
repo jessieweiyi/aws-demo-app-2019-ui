@@ -1,0 +1,16 @@
+.DropZone {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    height: 400px;
+    font-size: 16px;
+}
+
+.DropZoneMessage {
+    color: red;
+    font-size: 12px;
+}
+
+.DropZone input{
+    width: 100px;
+}
