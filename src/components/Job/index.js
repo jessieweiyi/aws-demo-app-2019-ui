@@ -40,7 +40,7 @@ class Job extends Component {
 
 const mapStateToProps = state => ({
   jobStatus: state.job.get('jobStatus'),
-  jobId: state.job.get('jobData'),
+  jobId: state.job.get('jobId'),
   jobUrl: state.job.get('jobUrl'),
   jobError: state.job.get('jobError'),
 })
