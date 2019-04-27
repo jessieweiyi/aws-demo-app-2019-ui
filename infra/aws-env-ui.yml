@@ -74,9 +74,9 @@ Outputs:
     Description: Name of Website S3 bucket
     Value: !Ref 'WebsiteBucket'
     Export:
-      Name: !Sub ${Environment}:WebsiteBucketName
+      Name: !Join [ ':', [ !Ref 'AWS::StackName', 'WebsiteBucketName' ] ]
   WebsiteDomainName:
     Description: Domain name of the website
     Value: !Ref 'DomainName'
     Export:
-      Name: !Sub ${Environment}:WebsiteDomainName
+      Name: !Join [ ':', [ !Ref 'AWS::StackName', 'WebsiteDomainName' ] ]
