@@ -1,0 +1,82 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: The Webiste infrastructure including an S3 bucket configured for hosting a static website and a Route 53 DNS record pointing to the S3 bucket
+Parameters: 
+  Environment:
+    Type: String
+    Description: "The deployment environment: dev, prod"
+  Route53HostedZone:
+    Type: String
+    Description: "The DNS name of an existing Amazon Route 53 hosted zone"
+    AllowedPattern: (?!-)[a-zA-Z0-9-.]{1,63}(?<!-)
+    ConstraintDescription: "must be a valid DNS zone name."
+  DomainName:
+    Type: String
+    Description: "The full domain name of the website"
+    AllowedPattern: (?!-)[a-zA-Z0-9-.]{1,63}(?<!-)
+    ConstraintDescription: "must be a valid DNS zone name."
+Mappings:
+  RegionMap:
+    us-east-1:
+      S3hostedzoneID: Z3AQBSTGFYJSTF
+      WebsiteEndpoint: s3-website-us-east-1.amazonaws.com
+    us-west-1:
+      S3hostedzoneID: Z2F56UZL2M1ACD
+      WebsiteEndpoint: s3-website-us-west-1.amazonaws.com
+    us-west-2:
+      S3hostedzoneID: Z3BJ6K6RIION7M
+      WebsiteEndpoint: s3-website-us-west-2.amazonaws.com
+    eu-west-1:
+      S3hostedzoneID: Z1BKCTXD74EZPE
+      WebsiteEndpoint: s3-website-eu-west-1.amazonaws.com
+    ap-southeast-1:
+      S3hostedzoneID: Z3O0J2DXBE1FTB
+      WebsiteEndpoint: s3-website-ap-southeast-1.amazonaws.com
+    ap-southeast-2:
+      S3hostedzoneID: Z1WCIGYICN2BYD
+      WebsiteEndpoint: s3-website-ap-southeast-2.amazonaws.com
+    ap-northeast-1:
+      S3hostedzoneID: Z2M4EHUR26P7ZW
+      WebsiteEndpoint: s3-website-ap-northeast-1.amazonaws.com
+    sa-east-1:
+      S3hostedzoneID: Z31GFT0UA1I2HV
+      WebsiteEndpoint: s3-website-sa-east-1.amazonaws.com
+Resources: 
+  WebsiteBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref 'DomainName'
+      AccessControl: PublicRead
+      WebsiteConfiguration:
+        IndexDocument: index.html
+  WebsiteBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref 'WebsiteBucket'
+      PolicyDocument:
+        Statement:
+        - Sid: PublicReadForGetBucketObjects
+          Effect: Allow
+          Principal: '*'
+          Action: s3:GetObject
+          Resource: !Join ['', ['arn:aws:s3:::', !Ref 'WebsiteBucket', /*]]
+  WebsiteDNSName:
+    Type: AWS::Route53::RecordSetGroup
+    Properties:
+      HostedZoneName: !Join ['', [!Ref 'Route53HostedZone', .]]
+      RecordSets:
+        - Name: !Ref 'DomainName'
+          Type: A
+          AliasTarget:
+            HostedZoneId: !FindInMap [ RegionMap, !Ref 'AWS::Region', S3hostedzoneID]
+            DNSName: !FindInMap [ RegionMap, !Ref 'AWS::Region', WebsiteEndpoint]
+Outputs:
+  WebsiteBucketName:
+    Description: Name of Website S3 bucket
+    Value: !Ref 'WebsiteBucket'
+    Export:
+      Name: !Sub ${Environment}:WebsiteBucketName
+  WebsiteDomainName:
+    Description: Domain name of the website
+    Value: !Ref 'DomainName'
+    Export:
+      Name: !Sub ${Environment}:WebsiteDomainName

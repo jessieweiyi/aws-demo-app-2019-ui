@@ -1,3 +1,3 @@
 window.ENVIRONMENT_CONFIG = {
-  SERVICE_HOST: 'http://service.aws-demo-app.jessieweiyi.com',
+  SERVICE_HOST: 'http://api.aws-demo-app-2019.jessieweiyi.com',
 };

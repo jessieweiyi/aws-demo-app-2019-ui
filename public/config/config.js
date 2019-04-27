@@ -1,3 +1,3 @@
 window.ENVIRONMENT_CONFIG = {
-  SERVICE_HOST: 'http://localhost:4000',
+  API_HOST: 'http://localhost:4000',
 };

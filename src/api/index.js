@@ -7,13 +7,13 @@ function submitJob(file) {
       'Content-Type': file.type,
     },
   };
-  const url = `${ window.ENVIRONMENT_CONFIG.SERVICE_HOST }/api/v1/job/${ file.name }`;
+  const url = `${ window.ENVIRONMENT_CONFIG.API_HOST }/api/v1/job/${ file.name }`;
   return axios.put(url, file, options)
       .then((result) => { return result.data; });
 }
 
 function getJobResult(jobId) {
-  const url = `${ window.ENVIRONMENT_CONFIG.SERVICE_HOST }/api/v1/job/${ jobId }`;
+  const url = `${ window.ENVIRONMENT_CONFIG.API_HOST }/api/v1/job/${ jobId }`;
   return new Promise((resolve, reject) => {
     axios.get(url)
             .then(result => {
