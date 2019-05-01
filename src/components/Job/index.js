@@ -6,6 +6,7 @@ import S3FileUploader from '../S3FileUploader';
 import { JobStatus } from '../../reducers/job';
 import { resetJob } from '../../actions/resetJob';
 
+import './styles.css';
 class Job extends Component {
   constructor() {
     super();
@@ -32,7 +33,7 @@ class Job extends Component {
         {(jobStatus === JobStatus.COMPLETED) && <div><img src={ jobUrl } alt={ `job_${ jobId }` } /></div>}
         {jobError && <p> {jobError} </p>}
         { (jobStatus === JobStatus.ERROR || jobStatus === JobStatus.COMPLETED)
-          && <button onClick={ this.handleResetButtonClick }>Start again</button> }
+          && <button className='resetButton' onClick={ this.handleResetButtonClick }>Start again</button> }
       </div>
     );
   }
