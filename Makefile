@@ -1,5 +1,6 @@
 AWS_REGION=ap-southeast-2
 ENVIRONMENT := dev
+PROJECT := aws-demo-app-2019-ui
 
 FOLDER_CF_TEMPLATES := $(PWD)/infra
 FILE_CF_TEMPLATE := aws-env-ui.yml
@@ -9,6 +10,10 @@ DEV_ROUTE53_HOSTEDZONE := jessieweiyi.com
 DEV_DOMAIN_NAME := aws-demo-app-2019.dev.jessieweiyi.com
 PROD_ROUTE53_HOSTEDZONE := jessieweiyi.com
 PROD_DOMAIN_NAME := aws-demo-app-2019.jessieweiyi.com
+
+DIR_BUILD := build
+VERSION := $(shell whoami)
+BUILD_IMAGE := $(PROJECT):$(VERSION)
 
 ifeq (dev, $(ENVIRONMENT))
 	ROUTE53_HOSTEDZONE := $(DEV_ROUTE53_HOSTEDZONE)
@@ -37,3 +42,14 @@ create-env-ui:
 update-env-ui:
 	aws cloudformation update-stack $(PROVISION_PARAMETERS)
 	aws cloudformation wait stack-update-complete --stack-name $(STACK_NAME_ENV_UI)
+
+.PHONY: build
+build:
+	@echo Building artifacts
+	docker build --target build -t $(APP_IMAGE) .
+	docker run --rm -t -v $(PWD)/$(DIR_BUILD):/opt/app/$(DIR_BUILD) -e VERSION=$(VERSION) $(BUILD_IMAGE)
+
+.PHONY: run-integration-tests
+run-integration-tests:
+	@echo Running intergration tests
+	@echo Intergrations tests to be implemented
