@@ -11,5 +11,6 @@ phases:
   post_build:
     commands:
       - make VERSION=$VERSION run-integration-tests
+      - make VERSION=$VERSION package
 artifacts:
-    files: build
+    files: build.zip
