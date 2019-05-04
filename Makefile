@@ -46,10 +46,16 @@ update-env-ui:
 .PHONY: build
 build:
 	@echo Building artifacts
-	docker build --target build -t $(APP_IMAGE) .
-	docker run --rm -t -v $(PWD)/$(DIR_BUILD):/opt/app/$(DIR_BUILD) -e VERSION=$(VERSION) $(BUILD_IMAGE)
+	docker build --target build -t $(BUILD_IMAGE) .
+	docker run --rm -t -v $(PWD)/$(DIR_BUILD):/opt/app/$(DIR_BUILD) $(BUILD_IMAGE)
 
 .PHONY: run-integration-tests
 run-integration-tests:
 	@echo Running intergration tests
 	@echo Intergrations tests to be implemented
+
+.PHONY: deploy
+deploy: 
+	aws s3 sync . s3://$(DOMAIN_NAME)/" --exclude "/index.html" --exclude "/config/*" --exclude .DS_Store
+	aws s3 cp ./config/config.$(ENVIRONMENT).js s3://$(DOMAIN_NAME)/config/config.js --metadata-directive REPLACE --cache-control max-age=0,no-cache,no-store,must-revalidate --content-type application/x-javascript
+	aws s3 cp ./index.html s3://$(DOMAIN_NAME)/index.html --metadata-directive REPLACE --cache-control max-age=0,no-cache,no-store,must-revalidate --content-type text/html
