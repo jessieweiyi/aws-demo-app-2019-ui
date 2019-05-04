@@ -57,7 +57,7 @@ run-integration-tests:
 .PHONY: package
 package:
 	@echo Packaging artifacts
-	zip build.zip build/*
+	zip -r build.zip build/*
 
 .PHONY: unpack
 unpack:
