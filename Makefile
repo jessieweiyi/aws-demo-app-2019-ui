@@ -66,6 +66,6 @@ unpack:
 
 .PHONY: deploy
 deploy: 
-	aws s3 sync "./build/." "s3://$(DOMAIN_NAME)/" --exclude "/index.html" --exclude "/config/*" --exclude .DS_Store
+	aws s3 sync "./build/." "s3://$(DOMAIN_NAME)/" --exclude "index.html" --exclude "config/config.*" --exclude .DS_Store
 	aws s3 cp "./build/config/config.$(ENVIRONMENT).js" "s3://$(DOMAIN_NAME)/config/config.js" --metadata-directive REPLACE --cache-control max-age=0,no-cache,no-store,must-revalidate --content-type application/x-javascript
 	aws s3 cp "./build/index.html" "s3://$(DOMAIN_NAME)/index.html" --metadata-directive REPLACE --cache-control max-age=0,no-cache,no-store,must-revalidate --content-type text/html
