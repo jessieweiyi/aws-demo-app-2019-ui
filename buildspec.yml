@@ -13,4 +13,7 @@ phases:
       - make VERSION=$VERSION run-integration-tests
       - make VERSION=$VERSION package
 artifacts:
-    files: build.zip
+    files: 
+      - build.zip
+      - Makefile
+      - buildspec.deploy.yml
