@@ -38,7 +38,18 @@ function queryJob(jobId) {
   }, retryOption);
 }
 
+function getHelloWorld() {
+  const url = `${ window.ENVIRONMENT_CONFIG.API_HOST }/api/v1/hello_world`;
+  return axios.get(url)
+      .then(result => {
+        if (result && result.data) {
+          return result.data;
+        }
+      });
+}
+
 export default {
   submitJob,
   queryJob,
+  getHelloWorld,
 };

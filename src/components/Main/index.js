@@ -1,6 +1,5 @@
 import React from 'react';
 import Job from '../Job';
-
 import './styles.css';
 
 const Main = () => (
